@@ -2,10 +2,12 @@ require('dotenv').config();
 const express = require('express');
 // Step 1: import Sentry at the top of server.js (underneath express)
 // TODO
+const Sentry = require('@sentry/node');
 
 // Importing Middleware
 const middleware = require('./middleware/config');
 const authenticate = require('./middleware/authenticate');
+const errorMiddleware = require('./middleware/errorReporting');
 
 // Importing Controllers
 const authController = require('./controllers/auth');
@@ -15,6 +17,7 @@ const usersController = require('./controllers/users');
 const server = express();
 // Step 4: Initialize Sentry in server.js
 // TODO
+Sentry.init({ dsn: process.env.SENTRY_DSN });
 
 // Middleware
 middleware(server);
@@ -25,6 +28,7 @@ server.use('/api/users', usersController);
 
 // Step 5C: Pass the server through an errorMiddleware function
 // TODO
+errorMiddleware(server);
 
 server.get('/', (req, res) => {
 	res.status(200).json({ message: 'Sanity check' });
