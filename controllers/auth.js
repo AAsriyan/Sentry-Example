@@ -26,6 +26,7 @@ router.post('/register', async (req, res) => {
 		});
 
 		// TODO throw new error for Sentry
+		throw new Error(err);
 	}
 });
 
